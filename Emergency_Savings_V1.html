@@ -17,9 +17,10 @@
         .section {
             margin: 20px 0;
         }
-        label {
+        .section label {
             display: block;
             margin-bottom: 10px;
+            color: #8B0000; /* Accent color */
         }
         input, .slider {
             width: 100%;
@@ -35,32 +36,193 @@
             text-align: center;
             font-size: 20px;
             margin-top: 30px;
+            color: #8B0000; /* Accent color */
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            background-color: white;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+        .tab.active {
+            background-color: #8B0000; /* Active tab color */
+            color: white;
+            border-bottom: none;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .risk-meter {
+            margin-top: 20px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
 </head>
 <body>
     <h1>Emergency Savings Estimator</h1>
-<br/>
+    <br/>
     <div class="section">
         <label for="monthly-spending">Estimated Monthly Living Spending ($):</label>
         <input type="number" id="monthly-spending" placeholder="Enter your monthly expenses in dollars">
     </div>
-<br/>
+    <br/>
     <div class="section">
         <label for="months-saving">How many months of emergency savings would you like to set aside for an emergency?</label>
         <input type="number" id="months-saving" value="3">
         <small>Note: The more months you set aside, the better prepared you might be for unexpected situations. While 3 months is recommended, you can adjust this number based on your personal circumstances.</small>
     </div>
-<br/>
+    <br/>
     <div class="section">
-        <label for="risk-meter">Risk Tolerance Meter:</label>
-        <input type="range" id="risk-meter" class="slider" min="0" max="10" value="5">
-        <div class="slider-labels">
-            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+        <label>Indicate Your Risk Tolerance:</label>
+        <div class="tabs">
+            <div class="tab" onclick="showTab('derive')">Help me derive my Risk Tolerance</div>
+            <div class="tab" onclick="showTab('know')">I know my Risk Tolerance</div>
         </div>
-        <br/>
-        <small>Instructions: Adjust the slider from 0 to 10 based on your risk tolerance, where 0 indicates minimal risk-taking and 10 indicates very high risk-taking.</small>
+        <div id="derive" class="tab-content">
+            <table>
+                <tr>
+                    <th>Question</th>
+                    <th>Very Unlikely</th>
+                    <th>Unlikely</th>
+                    <th>Neutral</th>
+                    <th>Likely</th>
+                    <th>Very Likely</th>
+                </tr>
+                <tr>
+                    <td>How likely are you to create a budget but not follow it?</td>
+                    <td><input type="radio" name="q1" value="1"></td>
+                    <td><input type="radio" name="q1" value="2"></td>
+                    <td><input type="radio" name="q1" value="3"></td>
+                    <td><input type="radio" name="q1" value="4"></td>
+                    <td><input type="radio" name="q1" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to overspend your income each month?</td>
+                    <td><input type="radio" name="q2" value="1"></td>
+                    <td><input type="radio" name="q2" value="2"></td>
+                    <td><input type="radio" name="q2" value="3"></td>
+                    <td><input type="radio" name="q2" value="4"></td>
+                    <td><input type="radio" name="q2" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to enjoy trying new things, even if theres a chance of failure?</td>
+                    <td><input type="radio" name="q3" value="1"></td>
+                    <td><input type="radio" name="q3" value="2"></td>
+                    <td><input type="radio" name="q3" value="3"></td>
+                    <td><input type="radio" name="q3" value="4"></td>
+                    <td><input type="radio" name="q3" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to stress about uncertainty in life?</td>
+                    <td><input type="radio" name="q4" value="1"></td>
+                    <td><input type="radio" name="q4" value="2"></td>
+                    <td><input type="radio" name="q4" value="3"></td>
+                    <td><input type="radio" name="q4" value="4"></td>
+                    <td><input type="radio" name="q4" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to spontaneously proceed with a financial decision before evaluating the risks and benefits?</td>
+                    <td><input type="radio" name="q5" value="1"></td>
+                    <td><input type="radio" name="q5" value="2"></td>
+                    <td><input type="radio" name="q5" value="3"></td>
+                    <td><input type="radio" name="q5" value="4"></td>
+                    <td><input type="radio" name="q5" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to borrow money from friends and family?</td>
+                    <td><input type="radio" name="q6" value="1"></td>
+                    <td><input type="radio" name="q6" value="2"></td>
+                    <td><input type="radio" name="q6" value="3"></td>
+                    <td><input type="radio" name="q6" value="4"></td>
+                    <td><input type="radio" name="q6" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to prioritize spending on non-essential items over saving for future needs?</td>
+                    <td><input type="radio" name="q7" value="1"></td>
+                    <td><input type="radio" name="q7" value="2"></td>
+                    <td><input type="radio" name="q7" value="3"></td>
+                    <td><input type="radio" name="q7" value="4"></td>
+                    <td><input type="radio" name="q7" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to splurge when you shop?</td>
+                    <td><input type="radio" name="q8" value="1"></td>
+                    <td><input type="radio" name="q8" value="2"></td>
+                    <td><input type="radio" name="q8" value="3"></td>
+                    <td><input type="radio" name="q8" value="4"></td>
+                    <td><input type="radio" name="q8" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to miss a loan or credit card payment?</td>
+                    <td><input type="radio" name="q9" value="1"></td>
+                    <td><input type="radio" name="q9" value="2"></td>
+                    <td><input type="radio" name="q9" value="3"></td>
+                    <td><input type="radio" name="q9" value="4"></td>
+                    <td><input type="radio" name="q9" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to quit a job without having another job lined up?</td>
+                    <td><input type="radio" name="q10" value="1"></td>
+                    <td><input type="radio" name="q10" value="2"></td>
+                    <td><input type="radio" name="q10" value="3"></td>
+                    <td><input type="radio" name="q10" value="4"></td>
+                    <td><input type="radio" name="q10" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to make large purchases?</td>
+                    <td><input type="radio" name="q11" value="1"></td>
+                    <td><input type="radio" name="q11" value="2"></td>
+                    <td><input type="radio" name="q11" value="3"></td>
+                    <td><input type="radio" name="q11" value="4"></td>
+                    <td><input type="radio" name="q11" value="5"></td>
+                </tr>
+                <tr>
+                    <td>How likely are you to ignore financial problems hoping they’ll resolve on their own?</td>
+                    <td><input type="radio" name="q12" value="1"></td>
+                    <td><input type="radio" name="q12" value="2"></td>
+                    <td><input type="radio" name="q12" value="3"></td>
+                    <td><input type="radio" name="q12" value="4"></td>
+                    <td><input type="radio" name="q12" value="5"></td>
+                </tr>
+            </table>
+            <button onclick="calculateRiskScore()">Calculate Risk Tolerance</button>
+            <div id="risk-score"></div>
+            <br/>
+            <label for="derived-risk-meter">Derived Risk Tolerance Meter:</label>
+            <input type="range" id="derived-risk-meter" class="slider risk-meter" min="1" max="10" value="0" disabled>
+            <div class="slider-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
+        </div>
+        <div id="know" class="tab-content">
+            <label for="risk-meter">Risk Tolerance Meter:</label>
+            <input type="range" id="risk-meter" class="slider risk-meter" min="1" max="10" value="5">
+            <div class="slider-labels">
+                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+            </div>
+            <br/>
+            <small>Instructions: Adjust the slider from 1 to 10 based on your risk tolerance, where 1 indicates minimal risk-taking and 10 indicates very high risk-taking.</small>
+        </div>
     </div>
 
     <div class="section total">
@@ -69,45 +231,86 @@
     </div>
 
     <script>
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(element => element.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(element => element.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tab}')"]`).classList.add('active');
+            document.getElementById(tab).classList.add('active');
+        }
+
+        function calculateRiskScore() {
+            let totalScore = 0;
+            document.querySelectorAll('input[type="radio"]:checked').forEach(input => {
+                totalScore += parseInt(input.value);
+            });
+            const percentageScore = (totalScore / 60) * 100;
+            const derivedRiskMeter = document.getElementById('derived-risk-meter');
+            derivedRiskMeter.value = Math.round((totalScore / 60) * 10);
+            document.getElementById('risk-score').innerText = `Your risk tolerance score is ${percentageScore.toFixed(2)}%`;
+        }
+
         function calculateTotal() {
             const monthlySpending = parseFloat(document.getElementById('monthly-spending').value || 0);
             const monthsSaving = parseInt(document.getElementById('months-saving').value || 0);
-            const riskMeter = parseInt(document.getElementById('risk-meter').value || 0);
+            const riskMeter = parseInt(document.querySelector('.tab-content.active input[type="range"]').value || 0);
             const riskMultipliers = [3.5, 3.25, 3, 2.75, 2.5, 2.25, 2, 1.75, 1.5, 1.25, 1];
-            const riskMultiplier = riskMultipliers[riskMeter];
+            const riskMultiplier = riskMultipliers[Math.round(riskMeter) - 1];
 
             const totalSavings = monthlySpending * monthsSaving * riskMultiplier;
             document.getElementById('total-savings').innerText = `$${totalSavings.toFixed(2)}`;
+            confetti();
+        }
 
-            // Start the confetti effect
-            const duration = 3000; // 3 seconds
-            const end = Date.now() + duration;
+        function confetti() {
+            const confettiElement = document.createElement('div');
+            confettiElement.style.position = 'fixed';
+            confettiElement.style.top = 0;
+            confettiElement.style.left = 0;
+            confettiElement.style.width = '100%';
+            confettiElement.style.height = '100%';
+            confettiElement.style.pointerEvents = 'none';
+            confettiElement.style.zIndex = 9999;
+            document.body.appendChild(confettiElement);
 
-            const frame = () => {
-                confetti({
-                    particleCount: 2,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0.1 },
-                    shapes: ['square'],
-                    colors: ['#85bb65'] // Dollar bill green
-                });
-                confetti({
-                    particleCount: 2,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 0.9 },
-                    shapes: ['square'],
-                    colors: ['#85bb65'] // Dollar bill green
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
+            const count = 200;
+            const defaults = {
+                origin: { y: 0.7 }
             };
 
-            frame();
+            function fire(particleRatio, opts) {
+                confetti(
+                    Object.assign({}, defaults, opts, {
+                        particleCount: Math.floor(count * particleRatio)
+                    })
+                );
+            }
+
+            fire(0.25, {
+                spread: 26,
+                startVelocity: 55,
+            });
+            fire(0.2, {
+                spread: 60,
+            });
+            fire(0.35, {
+                spread: 100,
+                decay: 0.91,
+                scalar: 0.8
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 25,
+                decay: 0.92,
+                scalar: 1.2
+            });
+            fire(0.1, {
+                spread: 120,
+                startVelocity: 45,
+            });
+
+            setTimeout(() => document.body.removeChild(confettiElement), 5000);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.3.2/dist/confetti.browser.min.js"></script>
 </body>
 </html>
